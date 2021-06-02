@@ -34,47 +34,51 @@ function showAll(cards,pgHeader,pgParagraph){
 
         pgHeader.innerHTML = "All Pokemons";
         pgParagraph.innerHTML = ' ';
-        for(var i = 0; i < 800; i++) {
-            //fetching poke picture finalData["Name"][i]
-            var name = finalData["Name"][i].toLowerCase();
-            //function for fetching image
+        for(let i = 0; i < 800; i++) {
 
-            var img = pokeImage(name);
-            //creating new elements in the DOM
-            var div = document.createElement("div")
-            div.setAttribute("class","card")
-            div.innerHTML =
-            `<div class="con">
-                <img src="${img}" alt="Avatar" style="width:100%">
-                <h4><b>${finalData["Name"][i]}</b></h4>
-                <p>${finalData["Type 1"][i]}</p>
-            </div>`;
-            cards.append(div);
-        };
+            //fetching poke picture
+            let name = finalData["Name"][i].toLowerCase();
+            
+            //fetching image from api
+            fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+            .then((res)=>{
+                return res.json()
+            })
+            .then((dt)=>{
+                //gets the image link from the api
+                var img = dt["sprites"].front_default
+                //creating new elements in the DOM
+                var div = document.createElement("div")
+                div.setAttribute("class","card")
+                div.innerHTML =
+                `<div class="con">
+                    <img src="${img}" alt="Avatar" style="width:100%">
+                    <h4><b>${finalData["Name"][i]}</b></h4>
+                    <p>${finalData["Type 1"][i]}</p>
+                    <p>${finalData["Type 2"][i]}</p>
+                </div>`;
+                cards.append(div);
+                
+            })
+            .catch((error)=>{
+                console.log(`problem with image api: ${error}`)
+            })
+        }
     })
     .catch(error=>{
         console.log("problem with django")
     });
 }
 
-function pokeImage(name){
-    return (fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-    .then(function(res) {
-        if (res.ok){
-            console.log("oneok")
-            return res.json();
-        }
-        else{
-            console.log("notok")
-        } 
-    })
-    .then(function(dataa){
-        return (dataa["sprites"].front_default)
-    })
-    .catch(function(errorr){
+/*function pokeImage(name){
+    return fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+    .then(res => res.json)
+    .then(dataa => dataa["sprites"].front_default)
+    .catch(errorr=>
         console.log("problem from image api")
-    }));
+    )
 }
+*/
 
 //index load function
 
