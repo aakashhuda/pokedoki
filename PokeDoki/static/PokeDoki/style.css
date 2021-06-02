@@ -15,7 +15,7 @@
     grid-template-areas: 
                         "navbar navbar"
                         "sidebar main";
-    height: 100vh;
+    height: 100%;
 }
 #navbar {
     border: 0px solid;
@@ -82,6 +82,7 @@ form {
 }
 .info {
     font-size: 70px;
+    text-align: justify;
     padding: 5px 5px 5px 5px;
     display: flex;
     flex-direction: column;
@@ -92,7 +93,7 @@ form {
     background-image: url("bg.png");
     background-repeat: no-repeat;
     background-size: 25%;
-    background-blend-mode:color;
+    background-blend-mode:overlay;
     background-position-x: right;
     background-position-y: bottom;
     background-color: #E7F6D1;
@@ -116,7 +117,7 @@ form {
 }
 #sidebar {
     padding: 12px 0px 12px 0px;
-    color:#051937
+    color:#051937;
     border: 1px solid;
     border-radius: 5px;
     background-color: #23CF14;
@@ -126,4 +127,25 @@ form {
     align-items: center;
     justify-content:stretch;
 }
-
+.cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    margin: 5px;
+  }
+  
+  /* On mouse-over, add a deeper shadow */
+.card:hover {
+    color: #E7F6D1;
+    background-color: #051937;
+    cursor: pointer;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+.con {
+    padding: 2px 16px;
+}

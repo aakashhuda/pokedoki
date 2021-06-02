@@ -9,6 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="{% static 'PokeDoki/style.css' %}">
+        <script src="{% static 'PokeDoki/poke.js' %}"></script>
     </head>
     <body>
         <div id="container">
@@ -17,10 +18,11 @@
                     <a href="" id="nothing">Nothing</a>
                 </div>
                 <div id="logo-div">
-                    <a href=""><img id="logo" src="{% static 'PokeDoki/Pokedoki.png' %}" alt=""></a>
+                    <a href="{% url 'index' %}"><img id="logo" src="{% static 'PokeDoki/Pokedoki.png' %}" alt=""></a>
                 </div>
                 <div id="search">
                     <form action="#" method="POST">
+                        {% csrf_token %}
                         <input type="text" id="search-box" placeholder="Search">
                         <input type="submit" value="Submit" id="search-btn">
                     </form>
@@ -38,8 +40,8 @@
                     <h1>Navs</h1>
                 </div>
                 <div class="sidebar-links">
-                    <a class="links" href="">Welcome Page</a>
-                    <a class="links" href="">All Pokemons</a>
+                    <a class="links" id="index-pg" href="{% url 'index' %}">Welcome Page</a>
+                    <a class="links" id="all-pokemons" href="">All Pokemons</a>
                 </div>
             </div>
 
