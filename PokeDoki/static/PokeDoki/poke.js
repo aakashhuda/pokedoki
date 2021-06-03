@@ -55,7 +55,7 @@ function showAll(cards,pgHeader,pgParagraph){
                     <img src="${img}" alt="Avatar" style="width:100%">
                     <h4><b>${finalData["Name"][i]}</b></h4>
                     <p>${finalData["Type 1"][i]}</p>
-                    <p>${finalData["Type 2"][i]}</p>
+                    <p>${finalData["Type 2"][i]}<p>
                 </div>`;
                 cards.append(div);
                 
