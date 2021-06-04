@@ -21,3 +21,14 @@ def allpoke(request):
     return JsonResponse({
         "data": df.to_json(),
     })
+
+#showing elaborated info(each pokemon)
+def showinfo(request,pokemon):
+    mypokemon = functions.load_info(pokemon)
+    try:
+        found = mypokemon.to_json()
+    except AttributeError:
+        found = {"message": "Value not found"}
+    return JsonResponse({
+        "pokemon":found,
+    })
