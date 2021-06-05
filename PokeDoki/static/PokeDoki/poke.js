@@ -5,8 +5,9 @@ document.addEventListener('DOMContentLoaded', function(){
     const pgHeader = document.querySelector(".pg-header");
     const pgParagraph = document.querySelector(".pg-paragraph");
     const cards = document.querySelector(".cards");
-    const pokeDiv = document.querySelector("#poke-div");
+    const pokeDiv = document.querySelector(".poke-div");
     const pokeInfo = document.querySelector(".poke-info");
+    
 
 
     //load index page
@@ -15,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function(){
     };
     //Showing All Pokemon
     all_poke.onclick = ()=>{
-        
-        showAll(cards,pgHeader,pgParagraph,pokeInfo);
+        pokeInfo.innerHTML = '';
+        showAll(cards,pgHeader,pgParagraph,pokeInfo,pokeDiv);
         return false;
     }
      
@@ -25,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function(){
 //functions
 
 //Showing All Pokemon function
-function showAll(cards,pgHeader,pgParagraph,pokeInfo){
+function showAll(cards,pgHeader,pgParagraph,pokeInfo,pokeDiv){
+    console.log("Running")
     fetch("/all_pokemons")
     .then(response =>{
         return response.json()
@@ -63,24 +65,28 @@ function showAll(cards,pgHeader,pgParagraph,pokeInfo){
                     <img src="${img}" alt="Avatar" style="width:100%">
                     <h4><b>${finalData["Name"][i]}</b></h4>
                     <p>${finalData["Type 1"][i]}</p>
-                    <p>${finalData["Type 2"][i]}<p>
                 </div>`;
 
                 //inserting each new div inside the cards div
                 cards.append(div);
-                
+            //assigning onclick event to each card    
             })
             .then(()=>{
                 document.querySelectorAll(".card").forEach(function(card){
                     card.onclick = function() {
+                        //accessing the data-name information
                         fetch(`/${card.dataset.name}/info`)
                         .then((res)=>{
                             return res.json()
                         })
                         .then(dt=>{
+                            //converting to Json
                             return JSON.parse(dt.pokemon)
                         })
+                        //fetching for image
+                        //returning a object with the image and csv informations(using object makes it async operation)
                         .then(function(info){
+                            pgHeader.innerHTML = `${info["Name"]}`
                             return fetch(`https://pokeapi.co/api/v2/pokemon/${info["Name"].toLowerCase()}`)
                             .then((res)=>{
                                 return res.json()
@@ -94,17 +100,15 @@ function showAll(cards,pgHeader,pgParagraph,pokeInfo){
                             
                             
                         })
+                        //creating divs accessing the object's information
                         .then((fullInfo)=>{
-                            console.log(fullInfo["img_info"]["sprites"]["other"]["official-artwork"].front_default)
+                            
                             var divOne = document.createElement("div")
                             var divTwo = document.createElement("div")
-                            var divThree = document.createElement("div")
                             divOne.className = "picture"
                             divTwo.className = "inf"
-                            divThree.className = "chart"
-                            divOne.innerHTML = `<div><img src="${fullInfo["img_info"]["sprites"]["other"]["official-artwork"].front_default}" alt="Official Artwork of ${fullInfo["info"]["Name"]}" width="80%"></div>`
+                            divOne.innerHTML = `<div><img src="${fullInfo["img_info"]["sprites"]["other"]["official-artwork"].front_default}" alt="Official Artwork of ${fullInfo["info"]["Name"]}" style='max-height: 100%; max-width: 100%; object-fit: cover'></div>`
                             divTwo.innerHTML = `<div>
-                                                    <div>
                                                         Name: ${fullInfo["info"]["Name"]}
                                                     </div>
                                                     <div>
@@ -118,11 +122,38 @@ function showAll(cards,pgHeader,pgParagraph,pokeInfo){
                                                     </div>
                                                     <div>
                                                         Legendary : ${fullInfo["info"]["Legendary"]}
-                                                    </div>
-                                                </div>`
+                                                    </div>`
                             
                             pokeInfo.append(divOne)
                             pokeInfo.append(divTwo)
+                            return fullInfo["info"]
+                        })
+                        .then((info)=>{
+                            var divThree = document.createElement("div")
+                            divThree.className = "chart"
+                            divThree.innerHTML = `<canvas id="myChart" width="400" height="400"></canvas>`
+                            pokeInfo.append(divThree)
+                            return info
+                        })
+                        .then((info)=>{
+                            console.log(info)
+                            var ctx = document.querySelector("#myChart").getContext('2d')
+                            var myChart = new Chart(ctx, {
+                                type: "bar",
+                                data : {
+                                    labels: ["Attack","Defense","HP","Sp. Atk","Sp. Def","Speed"],
+                                    datasets: [{
+                                        label: `${info["Name"]}'s Statistics`,
+                                        data: [info["Attack"],info["Defense"],info["HP"],info["Sp. Atk"],info["Sp. Def"],info["Speed"]],
+                                        backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+                                        borderColor: ['#2F4858'],
+                                        borderWidth: 1
+                                    }]
+                                }
+                            })
+                            console.log(pokeDiv)
+                            cards.innerHTML= ''
+                            
                         })
                         .catch(error=>{
                             console.log(error)

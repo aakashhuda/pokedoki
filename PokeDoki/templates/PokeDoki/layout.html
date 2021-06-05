@@ -9,7 +9,9 @@
         <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
 
         <link rel="stylesheet" href="{% static 'PokeDoki/style.css' %}">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.3.2/dist/chart.min.js"></script>
         <script src="{% static 'PokeDoki/poke.js' %}"></script>
+
     </head>
     <body>
         <div id="container">
@@ -32,7 +34,7 @@
 
             <div id="body">
                 {% block body %}
-
+                
                 {% endblock %}
             </div>
             <div id="sidebar">
