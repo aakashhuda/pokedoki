@@ -11,7 +11,6 @@ def load_file():
 def load_info(pokemon):
     df = load_file()
     names = df["Name"]
-    id_no = df["#"]
     mypokemon = None
     try:
         for i in range(df["Name"].count()):
@@ -20,7 +19,7 @@ def load_info(pokemon):
             else:
                 continue
     except (KeyError):
-        mypokemon = {"message":"Value Not Found"}
+        mypokemon = {"Name":"Pokemon Not Found"}
 
     return mypokemon
 

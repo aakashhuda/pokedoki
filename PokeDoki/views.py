@@ -28,7 +28,7 @@ def showinfo(request,pokemon):
     try:
         found = mypokemon.to_json()
     except AttributeError:
-        found = {"message": "Value not found"}
+        found = {"Name": "Pokemon not found"}
     return JsonResponse({
         "pokemon":found,
     })
